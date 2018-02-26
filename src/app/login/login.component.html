@@ -1,0 +1,24 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <!-- <img src="assets/images/logo.png" width="150px" class="user-avatar" /> -->
+            <h1>Secondary Stock Sales</h1>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput type="text" placeholder="Username">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="full-width">
+                        <input matInput type="password" placeholder="Password">
+                    </mat-form-field>
+                </div>
+            </div>
+            <button mat-raised-button color="primary" [routerLink]="['/dashboard']" (click)="onLoggedin()">Log in</button>
+            <button mat-raised-button color="primary">Sign up</button>
+        </div>
+    </div>
+</div>
