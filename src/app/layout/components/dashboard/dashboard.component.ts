@@ -1,79 +1,114 @@
 import { Component, OnInit } from '@angular/core';
-
+import { DashboardService } from './dashboard.service';
+import { Stock } from './dashboard.model';
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss']
+    styleUrls: ['./dashboard.component.scss'],
+    providers: [DashboardService]
 })
 export class DashboardComponent implements OnInit {
-    constructor() {
+    constructor(private dashboardServ: DashboardService) {
 
     }
 
     ngOnInit() {
         //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
         //Add 'implements OnInit' to the class.
-
+        this.fetchFeaturedStock();
+        this.fetchMonthlySales();
+        this.fetchYearlySales();
+        this.fetchStockWiseSales();
+        this.fetchSalesTypeWiseSale();
     }
 
-    public lineChartData: Array<any> = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-        { data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C' }
-    ];
-    public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    /**Line Chart Data */
+    public lineChartData: Array<any> = [];
+    public lineChartLabels: Array<any> = [];
     public lineChartOptions: any = {
         responsive: true
     };
-    public lineChartColors: Array<any> = [
-        { // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        },
-        { // dark grey
-            backgroundColor: 'rgba(77,83,96,0.2)',
-            borderColor: 'rgba(77,83,96,1)',
-            pointBackgroundColor: 'rgba(77,83,96,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(77,83,96,1)'
-        },
-        { // grey
-            backgroundColor: 'rgba(148,159,177,0.2)',
-            borderColor: 'rgba(148,159,177,1)',
-            pointBackgroundColor: 'rgba(148,159,177,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-        }
-    ];
+
+    private fetchMonthlySales() {
+        this.dashboardServ.getMonthlySales().subscribe((data: any) => {
+            if (data) {
+                this.lineChartData = data.values;
+                this.lineChartLabels = data.xlabel;
+            }
+        }, (err: any) => {
+            console.log(err)
+        })
+    }
     public lineChartLegend: boolean = true;
     public lineChartType: string = 'line';
+    public lineChartColors: Array<any>;
+    /*************** */
 
+
+    /**bar chart data */
+    public barChartLabels: string[] = [];
+    public barChartData: any[] = [];
+
+    private fetchYearlySales() {
+        this.dashboardServ.getYearlySales().subscribe((data: any) => {
+            if (data) {
+                this.barChartData = data.values;
+                this.barChartLabels = data.xlabel;
+            }
+        }, (err: any) => {
+            console.log(err)
+        })
+    }
     public barChartOptions: any = {
         scaleShowVerticalLines: false,
         responsive: true
     };
-    public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
     public barChartType: string = 'bar';
     public barChartLegend: boolean = true;
+    /**************** */
 
-    public barChartData: any[] = [
-        { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-        { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-    ];
-
-    public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-    public doughnutChartData: number[] = [350, 450, 100];
+    /**Doughnut chart starts */
+    public doughnutChartLabels: string[] = [];
+    public doughnutChartData: number[] = [];
+    private fetchSalesTypeWiseSale() {
+        this.dashboardServ.getSaleTypeWiseSales().subscribe((data: any) => {
+            if (data) {
+                this.doughnutChartData = data.values;
+                this.doughnutChartLabels = data.label;
+            }
+        }, (err: any) => {
+            console.log(err)
+        })
+    }
     public doughnutChartType: string = 'doughnut';
+    /*************** */
 
-    // Pie
-    public pieChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales'];
-    public pieChartData: number[] = [300, 500, 100];
+    /** Pie chart starts*/
+    public pieChartLabels: string[] = [];
+    public pieChartData: number[] = [];
+    private fetchStockWiseSales() {
+        this.dashboardServ.getStockWiseSales().subscribe((data: any) => {
+            this.pieChartData = data.values;
+            this.pieChartLabels = data.label;
+        }, (err: any) => {
+            console.log(err)
+        })
+    }
     public pieChartType: string = 'pie';
+    /************** */
 
+    /**Table data */
+    displayedColumns = [];
+    dataSource = [];
+    private fetchFeaturedStock() {
+        this.dashboardServ.getFeaturedStock().subscribe((data: any) => {
+            if (data) {
+                this.displayedColumns = data.columns;
+                this.dataSource = data.data;
+            }
+        }, (err: any) => {
+            console.log(err);
+        })
+    }
+    /********* */
 }

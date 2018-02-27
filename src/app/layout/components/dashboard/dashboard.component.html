@@ -1,20 +1,83 @@
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" *ngIf="dataSource.length && displayedColumns.length">
+        <div class="col">
+            <div class="example-container mat-elevation-z8">
+                <mat-table #table [dataSource]="dataSource">
+
+                    <!-- Item Column -->
+                    <ng-container matColumnDef="item">
+                        <mat-header-cell *matHeaderCellDef> Item </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.item}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Opening Balance Column -->
+                    <ng-container matColumnDef="openingBalance">
+                        <mat-header-cell *matHeaderCellDef> Opening Balance </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.openingBalance}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Goods Received Column -->
+                    <ng-container matColumnDef="goodsReceived">
+                        <mat-header-cell *matHeaderCellDef> Goods Received </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.goodsReceived}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Open Order Column -->
+                    <ng-container matColumnDef="openOrder">
+                        <mat-header-cell *matHeaderCellDef> Open Order </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.openOrder}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Dispatched Column -->
+                    <ng-container matColumnDef="dispatched">
+                        <mat-header-cell *matHeaderCellDef> Dispatched </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.dispatched}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Closing Balance Column -->
+                    <ng-container matColumnDef="closingBalance">
+                        <mat-header-cell *matHeaderCellDef> Closing Balance </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.closingBalance}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Fulfillment Column -->
+                    <ng-container matColumnDef="fullfillment">
+                        <mat-header-cell *matHeaderCellDef> Fullfillment </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.fullfillment}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
         <div class="col">
             <div class="row">
                 <div class="col-sm-6">
                     <mat-card>
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="font-italic">Monthly Sales</h4>
+                            </div>
+                        </div>
                         <div style="display: block;">
-                            <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
-                                [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                            <canvas *ngIf="lineChartData.length && lineChartLabels.length" baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
+                                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
                         </div>
                     </mat-card>
                 </div>
                 <div class="col-sm-6">
                     <mat-card>
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="font-italic">Sales Type</h4>
+                            </div>
+                        </div>
                         <div style="display: block">
-                            <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="doughnutChartType" (chartHover)="chartHovered($event)"
-                                (chartClick)="chartClicked($event)"></canvas>
+                            <canvas *ngIf="doughnutChartLabels.length && doughnutChartData.length" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
+                                [chartType]="doughnutChartType"></canvas>
                         </div>
                     </mat-card>
                 </div>
@@ -22,17 +85,26 @@
             <div class="row mt-5">
                 <div class="col-sm-6">
                     <mat-card>
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="font-italic">Yearly Sales</h4>
+                            </div>
+                        </div>
                         <div style="display: block">
-                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend"
-                                [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                            <canvas *ngIf="barChartData.length && barChartLabels.length" baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
                         </div>
                     </mat-card>
                 </div>
                 <div class="col-sm-6">
                     <mat-card>
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="font-italic">Stock Type</h4>
+                            </div>
+                        </div>
                         <div style="display: block">
-                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-                                (chartClick)="chartClicked($event)"></canvas>
+                            <canvas *ngIf="pieChartLabels.length && pieChartData.length" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"></canvas>
                         </div>
                     </mat-card>
                 </div>

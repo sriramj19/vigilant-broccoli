@@ -1,4 +1,4 @@
-$topnav-background-color: #fff;
+$topnav-background-color: #f2f3fa;
 :host {
     display: block;
 }
@@ -10,9 +10,9 @@ $topnav-background-color: #fff;
     bottom: 0;
     overflow: auto;
     background: $topnav-background-color;
-    text-align: center;
+    text-align: left;
     color: #222;
-    padding: 3em;
+    padding: 10em;
 
     h1 {
         font-weight: 300;
@@ -26,5 +26,5 @@ $topnav-background-color: #fff;
 }
 
 .full-width {
-    width: 33.33%;
+    width: 100%;
 }
